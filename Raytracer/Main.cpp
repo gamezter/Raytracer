@@ -1,0 +1,66 @@
+#include <FreeImage.h>
+#include "Scene.h"
+#include "Sphere.h"
+
+const float WIDTH = 1200;
+const float HEIGHT = 800;
+const float HFOV = 60 * 3.14159265f / 180.0f;
+const float VFOV = HFOV * HEIGHT / WIDTH;
+
+Scene* scene;
+FIBITMAP* bitmapz;
+
+
+void init()
+{
+	FreeImage_Initialise();
+	bitmapz = FreeImage_Allocate(WIDTH, HEIGHT, 24);
+	
+	scene = new Scene(bitmapz);
+
+	scene->camera->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
+	scene->camera->LookAt(Vector3(0.0f, 0.0f, 0.0f));
+
+	scene->AddModel(new Sphere(Vector3(1.0f, 0.0f, 0.0f), 1.0f, Vector3(2, 0, 0)));
+	scene->AddModel(new Sphere(Vector3(0.0f, 1.0f, 0.0f), 1.0f, Vector3()));
+	scene->AddModel(new Sphere(Vector3(0.0f, 0.0f, 1.0f), 1.0f, Vector3(-2, 0, 0)));
+
+	scene->AddLight(new Light(Vector3(239.0f / 255.0f, 219.0f / 255.0f, 139.0f / 255.0f), Vector3(1, 1, 1), Vector3(0, 10, -10)));
+}
+
+int main()
+{
+	init();
+
+	Ray* ray = new Ray();
+	ray->origin = scene->camera->GetOrigin();
+
+	for (int x = 0; x < WIDTH; x++) {
+		for (int y = 0; y < HEIGHT; y++) {
+
+			float relativeX = x * 2.0f / WIDTH - 1;
+			float relativeY = y * 2.0f / HEIGHT - 1;
+
+			//if ray origin is at (0 0 0) and facing +z direction, left is +x, right is -x, up is +y, down is -y
+			//relative x / y assume left to right is -1 to 1 and up to down is -1 to 1
+
+			ray->direction = Vector3(-relativeX * sinf(HFOV / 2.0f), -relativeY * sinf(VFOV / 2.0f), 1.0f);
+			ray->direction.Normalize();
+			ray->direction = scene->camera->GetOrientation() * ray->direction;
+
+			//SHOOT RAY
+			auto color = ray->Shoot(scene);
+
+			RGBQUAD FIColor;
+			FIColor.rgbRed = (BYTE)round(color.x * 255);
+			FIColor.rgbGreen = (BYTE)round(color.y * 255);
+			FIColor.rgbBlue = (BYTE)round(color.z * 255);
+
+			FreeImage_SetPixelColor(bitmapz, x, HEIGHT - y, &FIColor); //freeimage has 0,0 at bottom left
+		}
+	}
+	delete ray;
+
+	FreeImage_Save(FIF_PNG, bitmapz, "test.png", 0);
+	FreeImage_DeInitialise();
+}
