@@ -3,6 +3,8 @@
 Sphere::Sphere(Vector3 color, float radius, Vector3 position) : Model(color, position)
 {
 	Sphere::radius = radius;
+	//min = Vector3(-radius, -radius, -radius);
+	//max = Vector3(radius, radius, radius);
 	material = Material(color, 4, 0.4f, 0.2f);
 }
 
@@ -31,6 +33,7 @@ Hit Sphere::Intersect(Ray* ray) {
 	Vector3 normal = position - transform.GetPosition();
 
 	hit.valid = true;
+	hit.distance = t0;
 	hit.Color = material.Color;
 	hit.Position = position;
 	normal.Normalize();

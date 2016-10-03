@@ -2,7 +2,6 @@
 
 
 #include <vector>
-#include <FreeImage.h>
 #include "Camera.h"
 #include "Light.h"
 
@@ -12,12 +11,11 @@ class Scene
 private:
 	std::vector<Model*> models;
 	std::vector<Light*> lights;
-	FIBITMAP* bitmap;
 
 	float HFOV = 60 * 3.14159265f / 180.0f;
 
 public:
-	Scene(FIBITMAP* bitmap);
+	Scene();
 	Vector3 ambientLight;
 	Camera* camera;
 	void AddModel(Model* model);

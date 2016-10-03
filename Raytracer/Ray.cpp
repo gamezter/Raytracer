@@ -15,13 +15,23 @@ Vector3 Ray::Shoot(Scene* scene) {
 	int nModels = models->size();
 	int nLights = lights->size();
 
+	float z = 100000;
+	Vector3 illumination;
+
 	for (int i = 0; i < nModels; i++) {
 
 		Model* model = models->at(i);
 		Hit hit = model->Intersect(this);
-
 		if (hit.valid) {
-			Vector3 illumination = model->material.Color * scene->ambientLight * model->material.Ambient;
+
+			if (hit.distance >= z)
+			{
+				continue;
+			}
+
+			z = hit.distance;
+
+			illumination = model->material.Color * scene->ambientLight * model->material.Ambient;
 
 			for(int j = 0; j < nLights; j++)
 			{
@@ -43,12 +53,12 @@ Vector3 Ray::Shoot(Scene* scene) {
 
 				illumination = illumination + light->Color * diffuse + light->Specular * specular;
 			}
-
-			if (illumination.x > 1) illumination.x = 1;
-			if (illumination.y > 1) illumination.y = 1;
-			if (illumination.z > 1) illumination.z = 1;
-			return illumination;
 		}
+
+		if (illumination.x > 1) illumination.x = 1;
+		if (illumination.y > 1) illumination.y = 1;
+		if (illumination.z > 1) illumination.z = 1;
+		
 	}
-	return Vector3();
+	return illumination;
 }

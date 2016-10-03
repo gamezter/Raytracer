@@ -2,9 +2,8 @@
 #include "Light.h"
 
 
-Scene::Scene(FIBITMAP* bitmap) 
+Scene::Scene() 
 {
-	Scene::bitmap = bitmap;
 	camera = new Camera();
 }
 
