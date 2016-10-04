@@ -29,7 +29,7 @@ Vector3 Scene::Shoot(Ray* ray) {
 	int nModels = models.size();
 	int nLights = lights.size();
 
-	float z = 100000;
+	float z = INFINITY;
 	Vector3 illumination;
 
 	for (int i = 0; i < nModels; i++) {
@@ -38,11 +38,7 @@ Vector3 Scene::Shoot(Ray* ray) {
 		Hit hit = model->Intersect(ray);
 		if (hit.valid) {
 
-			if (hit.distance >= z)
-			{
-				continue;
-			}
-
+			if (hit.distance >= z) continue;
 			z = hit.distance;
 
 			illumination = model->material.Color * ambientLight * model->material.Ambient;

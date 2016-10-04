@@ -49,6 +49,12 @@ void Vector3::Normalize() {
 	z /= mag;
 }
 
+float Vector3::Magnitude() const
+{
+	return sqrt(x*x + y*y + z*z);
+}
+
+
 Matrix3::Matrix3(float m0, float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8) {
 	mat[0] = m0; mat[1] = m1; mat[2] = m2; mat[3] = m3; mat[4] = m4; mat[5] = m5; mat[6] = m6; mat[7] = m7; mat[8] = m8;
 }
