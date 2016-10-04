@@ -52,7 +52,7 @@ int main()
 			ray->direction = scene->camera->GetOrientation() * ray->direction;
 
 			//SHOOT RAY
-			auto color = ray->Shoot(scene);
+			auto color = scene->Shoot(ray);
 
 			RGBQUAD FIColor;
 			FIColor.rgbRed = (BYTE)round(color.x * 255);

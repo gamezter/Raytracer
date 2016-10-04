@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Light.h"
 
+class Ray;
 class Model;
 class Scene
 {
@@ -20,6 +21,7 @@ public:
 	Camera* camera;
 	void AddModel(Model* model);
 	void AddLight(Light* light);
+	Vector3 Shoot(Ray* ray);
 	std::vector<Model*>* GetModels() { return &models; }
 	std::vector<Light*>* GetLights() { return &lights; }
 };

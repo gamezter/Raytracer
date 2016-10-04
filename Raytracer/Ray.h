@@ -16,7 +16,6 @@ class Ray
 {
 public:
 	Ray();
-	Vector3 Shoot(Scene* scene);
 
 	Vector3 origin;
 	Vector3 direction;
