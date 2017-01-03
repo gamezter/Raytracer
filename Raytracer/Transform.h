@@ -6,12 +6,13 @@ struct Vector3 {
 
 	Vector3() { x = 0.0f; y = 0.0f; z = 0.0f; }
 	Vector3(float x, float y, float z) { Vector3::x = x; Vector3::y = y; Vector3::z = z; }
+
 	void Normalize();
 	float Magnitude() const;
+
 	float Dot(Vector3 vec) const;
 	Vector3 Cross(Vector3 vec) const;
 	Vector3 operator-(Vector3 vec) const;
-	Vector3 operator-() const;
 	Vector3 operator+(Vector3 vec) const;
 	Vector3 operator*(float val) const;
 	Vector3 operator*(Vector3 vec) const;

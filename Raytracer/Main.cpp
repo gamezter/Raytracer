@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "Sphere.h"
 #include "Plane.h"
+#include <Windows.h>
 
 const float WIDTH = 1200;
 const float HEIGHT = 800;
@@ -29,6 +30,11 @@ void init()
 
 	//scene->AddLight(new Light(Vector3(239.0f / 255.0f, 219.0f / 255.0f, 139.0f / 255.0f), Vector3(1, 1, 1), Vector3(0, 10, -10)));
 	scene->AddLight(new Light(Vector3(1,1,1), Vector3(1, 1, 1), Vector3(0, 10, -10)));
+}
+
+int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	
 }
 
 int main()
