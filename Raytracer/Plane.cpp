@@ -16,11 +16,8 @@ Plane::Plane(Vector3 normal, Vector3 color, float distance)
 	material = Material(color, 4, 0.4f, 0.2f);
 }
 
-Hit Plane::Intersect(Ray* ray)
+bool Plane::Intersect(Ray* ray, Hit* hit)
 {
-	Hit hit;
-	hit.valid = false;
-
 	float t;
 	Vector3 p = normal * distance;
 
@@ -29,14 +26,12 @@ Hit Plane::Intersect(Ray* ray)
 	Vector3 lineToPlane = p - ray->origin;
 	t = normal.Dot(lineToPlane) / denominator;
 
-	if(t >= 0)
-	{
-		hit.valid = true;
-		hit.Color = material.Color;
-		hit.Normal = normal;
-		hit.distance = t;
-		hit.Position = ray->origin + ray->direction * t;
-	}
-	return hit;
+	if(t < 0) return false;
+
+	hit->Color = material.Color;
+	hit->Normal = normal;
+	hit->distance = t;
+	hit->Position = ray->origin + ray->direction * t;
+	return true;
 }
 

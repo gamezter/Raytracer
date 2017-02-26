@@ -5,7 +5,6 @@
 class Scene;
 struct Hit
 {
-	bool valid;
 	float distance;
 	Vector3 Color;
 	Vector3 Position;

@@ -20,7 +20,7 @@ void Scene::AddLight(Light* light)
 	Vector3 total;
 	for(int i = 0; i < size; i++)
 	{
-		total = total + lights.at(i)->Color * (1.0f / size);
+		total += lights.at(i)->Color * (1.0f / size);
 	}
 	ambientLight = total;
 }
@@ -35,8 +35,8 @@ Vector3 Scene::Shoot(Ray* ray) {
 	for (int i = 0; i < nModels; i++) {
 
 		Model* model = models.at(i);
-		Hit hit = model->Intersect(ray);
-		if (hit.valid) {
+		Hit hit;
+		if (model->Intersect(ray, &hit)) {
 
 			if (hit.distance >= z) continue;
 			z = hit.distance;
@@ -47,11 +47,9 @@ Vector3 Scene::Shoot(Ray* ray) {
 			{
 				Light* light = lights.at(j);
 
-				Vector3 shadow = light->GetPosition() - hit.Position;
-				shadow.Normalize();
+				Vector3 shadow = (light->GetPosition() - hit.Position).Normalized();
 
-				Vector3 reflection = (hit.Normal * shadow.Dot(hit.Normal) * 2) - shadow;
-				reflection.Normalize();
+				Vector3 reflection = (hit.Normal * shadow.Dot(hit.Normal) * 2 - shadow).Normalized();
 
 				float diffuse = shadow.Dot(hit.Normal);
 				if (diffuse < 0) diffuse = 0;
@@ -61,7 +59,7 @@ Vector3 Scene::Shoot(Ray* ray) {
 				if (specular < 0) specular = 0;
 				specular = pow(specular, 50) * model->material.Specular;
 
-				illumination = illumination + light->Color * diffuse + light->Specular * specular;
+				illumination += light->Color * diffuse + light->Specular * specular;
 			}
 		}
 

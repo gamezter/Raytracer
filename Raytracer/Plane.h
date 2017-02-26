@@ -9,6 +9,6 @@ private:
 public:
 	Plane();
 	Plane(Vector3 normal, Vector3 color, float distance);
-	virtual Hit Intersect(Ray* ray) override;
+	virtual bool Intersect(Ray* ray, Hit* hit) override;
 };
 

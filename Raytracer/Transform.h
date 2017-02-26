@@ -8,13 +8,19 @@ struct Vector3 {
 	Vector3(float x, float y, float z) { Vector3::x = x; Vector3::y = y; Vector3::z = z; }
 
 	void Normalize();
+	Vector3 Normalized() const;
 	float Magnitude() const;
 
 	float Dot(Vector3 vec) const;
 	Vector3 Cross(Vector3 vec) const;
 	Vector3 operator-(Vector3 vec) const;
+	void operator-=(Vector3 vec);
 	Vector3 operator+(Vector3 vec) const;
+	void operator+=(Vector3 vec);
 	Vector3 operator*(float val) const;
+	void operator*=(float val);
+	Vector3 operator/(float val) const;
+	void operator/=(float val);
 	Vector3 operator*(Vector3 vec) const;
 };
 

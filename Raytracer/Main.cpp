@@ -32,10 +32,10 @@ void init()
 	scene->AddLight(new Light(Vector3(1,1,1), Vector3(1, 1, 1), Vector3(0, 10, -10)));
 }
 
-int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+/*int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	
-}
+}*/
 
 int main()
 {
@@ -53,8 +53,7 @@ int main()
 			//if ray origin is at (0 0 0) and facing +z direction, left is +x, right is -x, up is +y, down is -y
 			//relative x / y assume left to right is -1 to 1 and up to down is -1 to 1
 
-			ray->direction = Vector3(-relativeX * tanf(HFOV / 2.0f), -relativeY * tanf(VFOV / 2.0f), 1.0f);
-			ray->direction.Normalize();
+			ray->direction = Vector3(-relativeX * tanf(HFOV / 2.0f), -relativeY * tanf(VFOV / 2.0f), 1.0f).Normalized();
 			ray->direction = scene->camera->GetOrientation() * ray->direction;
 
 			//SHOOT RAY

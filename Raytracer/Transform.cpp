@@ -24,13 +24,9 @@ void Transform::SetPosition(Vector3 position) const
 
 void Transform::LookAt(Vector3 point) const
 {
-	Vector3 forward = point - GetPosition(); // Z
-	forward.Normalize();
-	Vector3 up = Vector3(0.0f, 1.0f, 0.0f); // Y
-	Vector3 left = up.Cross(forward); // X
-	left.Normalize();
-	up = forward.Cross(left);
-	up.Normalize();
+	Vector3 forward = (point - GetPosition()).Normalized(); // Z
+	Vector3 left = Vector3(0.0f, 1.0f, 0.0f).Cross(forward).Normalized(); // X
+	Vector3 up = forward.Cross(left).Normalized(); // Y
 
 	mat[0] = left.x; mat[1] = up.x; mat[2] = forward.x;
 	mat[4] = left.y; mat[5] = up.y; mat[6] = forward.y;
@@ -42,11 +38,18 @@ Matrix3 Transform::GetRotation() const
 	return Matrix3(mat[0], mat[1], mat[2], mat[4], mat[5], mat[6], mat[8], mat[9], mat[10]);
 }
 
-void Vector3::Normalize() {
-	float mag = sqrt(x * x + y * y + z * z);
+void Vector3::Normalize() 
+{
+	float mag = sqrt(x*x + y*y + z*z);
 	x /= mag;
 	y /= mag;
 	z /= mag;
+}
+
+Vector3 Vector3::Normalized() const
+{
+	float mag = sqrt(x*x + y*y + z*z);
+	return Vector3(x / mag, y / mag, z / mag);
 }
 
 float Vector3::Magnitude() const
@@ -69,14 +72,47 @@ Vector3 Vector3::operator-(Vector3 vec) const
 	return Vector3(x - vec.x, y - vec.y, z - vec.z);
 }
 
+void Vector3::operator-=(Vector3 vec)
+{
+	x -= vec.x;
+	y -= vec.y;
+	z -= vec.z;
+}
+
 Vector3 Vector3::operator+(Vector3 vec) const
 {
 	return Vector3(x + vec.x, y + vec.y, z + vec.z);
 }
 
+void Vector3::operator+=(Vector3 vec)
+{
+	x += vec.x;
+	y += vec.y;
+	z += vec.z;
+}
+
 Vector3 Vector3::operator*(float val) const 
 {
 	return Vector3(x * val, y * val, z * val);
+}
+
+void Vector3::operator*=(float val)
+{
+	x *= val;
+	y *= val;
+	z *= val;
+}
+
+Vector3 Vector3::operator/(float val) const
+{
+	return Vector3(x / val, y / val, z / val);
+}
+
+void Vector3::operator/=(float val)
+{
+	x /= val;
+	y /= val;
+	z /= val;
 }
 
 Vector3 Vector3::operator*(Vector3 vec) const
